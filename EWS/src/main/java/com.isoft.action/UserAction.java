@@ -7,6 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/user")
 public class UserAction {
@@ -29,5 +33,17 @@ public class UserAction {
             return "success";
         else
             return "fault";
+    }
+    @RequestMapping("/findAllUser.do")
+    @ResponseBody
+    public Map<String,Object> findAllUser(int page, int limit) {
+        List<Map<String,Object>> list = userService.findAllUser(page,limit);
+        Map<String,Object> userCount=userService.findUserCount();
+        Map map=new HashMap();
+        map.put("code",0);
+        map.put("msg","用户信息");
+        map.put("count",userCount.get("count"));
+        map.put("data",list);
+        return map;//返回JSON格式数据，但是不能转换，因为找不到JSON消息转换器
     }
 }
