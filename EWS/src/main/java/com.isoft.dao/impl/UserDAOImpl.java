@@ -80,4 +80,17 @@ public class UserDAOImpl implements IUserDAO{
         }
         return 0;
     }
+
+    @Override
+    public List<Map<String, Object>> userTotal() {
+        try{
+            SqlSession sqlSession = sessionFactoryBean.openSession(true);
+            String statment = "com.isoft.mapping.userMapper.userTotal";
+            List<Map<String,Object>> list = sqlSession.selectList(statment);
+            return list;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

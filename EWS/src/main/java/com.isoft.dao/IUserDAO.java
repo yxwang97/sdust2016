@@ -9,4 +9,5 @@ public interface IUserDAO {
     List<Map<String,Object>> findAllUser(int page, int pageSize);
     Map<String,Object> findUserCount();
     int deleteUserInfoById(int id);
+    List<Map<String,Object>> userTotal();
 }

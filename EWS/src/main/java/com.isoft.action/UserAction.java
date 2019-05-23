@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,5 +55,20 @@ public class UserAction {
         if(i==0)
             result="fault";
         return result;//返回JSON格式数据，但是不能转换，因为找不到JSON消息转换器
+    }
+    @RequestMapping("/userTotal.do")
+    @ResponseBody
+    public Map<String,Object> userTotal() {
+        List<Map<String,Object>> list = userService.userTotal();
+        Map map=new HashMap();
+        List roleList=new ArrayList();
+        List countList=new ArrayList();
+        for(Map m:list){
+            roleList.add(m.get("role"));
+            countList.add(m.get("count"));
+        }
+        map.put("roleList",roleList);
+        map.put("countList",countList);
+        return map;//返回JSON格式数据，但是不能转换，因为找不到JSON消息转换器
     }
 }

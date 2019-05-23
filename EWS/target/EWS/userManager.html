@@ -12,6 +12,14 @@
             loadUserData();
         });
         function openUserInfoEdit(id,uname,role,email) {
+//            $("#id").val(id);
+//            $("#uname").val(uname);
+//            $("#role").val(role);
+//            $("#email").val(email);
+            sessionStorage.setItem("id",id);
+            sessionStorage.setItem("uname",uname);
+            sessionStorage.setItem("role",role);
+            sessionStorage.setItem("email",email);
             layer.open({
                 type:1,
                 title:"修改用户信息",
@@ -22,10 +30,6 @@
                     layer.msg("test");
                 }
             });
-            $("#id").val(id);
-            $("#uname").val(uname);
-            $("#role").val(role);
-            $("#email").val(email);
         }
         function deleteUserInfoById(id) {
             layer.confirm("是否真的要删除本记录？",{icon:3,title:"警告"},function (index) {
