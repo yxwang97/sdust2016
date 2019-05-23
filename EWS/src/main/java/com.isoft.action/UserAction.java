@@ -46,4 +46,13 @@ public class UserAction {
         map.put("data",list);
         return map;//返回JSON格式数据，但是不能转换，因为找不到JSON消息转换器
     }
+    @RequestMapping("/deleteUserInfoById.do")
+    @ResponseBody
+    public String deleteUserInfoById(int id) {
+        String result = "success";
+        int i=userService.deleteUserInfoById(id);
+        if(i==0)
+            result="fault";
+        return result;//返回JSON格式数据，但是不能转换，因为找不到JSON消息转换器
+    }
 }

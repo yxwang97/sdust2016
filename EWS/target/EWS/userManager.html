@@ -11,7 +11,45 @@
         $(function () {
             loadUserData();
         });
-
+        function openUserInfoEdit(id,uname,role,email) {
+            layer.open({
+                type:1,
+                title:"修改用户信息",
+                btn:["确认修改","取消"],
+                content:$("#editUserInfo").html(),
+                area:['400px','350px'],
+                yes:function (index) {
+                    layer.msg("test");
+                }
+            });
+            $("#id").val(id);
+            $("#uname").val(uname);
+            $("#role").val(role);
+            $("#email").val(email);
+        }
+        function deleteUserInfoById(id) {
+            layer.confirm("是否真的要删除本记录？",{icon:3,title:"警告"},function (index) {
+                if(index){
+                    $.ajax({
+                        url:"user/deleteUserInfoById.do",
+                        method:"post",
+                        data:{"id":id},
+                        success:function (result) {
+                            if(JSON.parse(result)=="success")
+                            {
+                                layer.msg("删除成功！");
+                                layui.table.reload("userInfoTable")
+                            }
+                            else
+                                layer.msg("删除失败！");
+                        },
+                        error:function () {
+                            layui.msg("请求服务器失败！");
+                        }
+                    })
+                }
+            });
+        }
         function loadUserData() {
             var table = layui.table;
             table.render({
@@ -19,6 +57,7 @@
                 elem: "#userInfoList",
                 url: "user/findAllUser.do",
                 title: "用户信息表",
+                id:"userInfoTable",
                 limit:5,
                 page:true,
                 limits:[10,20,50,100],
@@ -60,8 +99,8 @@
                             title: "操作",
                             align:"center",
                             templet:function (row) {
-                               var edit="<a href='' title='编辑'><span style='font-size:23px;' class='layui-icon layui-icon-util'></span></a>"
-                               var del="<a href='' title='删除'><span style='font-size:23px;' class='layui-icon layui-icon-delete'></span></a>"
+                               var edit='<a href="javascript:openUserInfoEdit(' + row.id+",'"+row.uname+"','"+row.role+"','"+row.email + '\');" title="编辑"><span style="font-size:23px;" class="layui-icon layui-icon-util"></span></a>'
+                               var del="<a href='javaScript:deleteUserInfoById("+row.id+");' title='删除'><span style='font-size:23px;' class='layui-icon layui-icon-delete'></span></a>"
                                 return edit+"&nbsp;&nbsp;&nbsp;&nbsp;"+del;
                             }
                         }
@@ -123,5 +162,41 @@
 <!--<tbody id="tb_body">-->
 
 <!--</tbody>-->
+<div align="center" id="editUserInfo" style="display: none" style="width: 300px">
+    <br>
+    <center>
+        <h2 >修改用户信息</h2>
+    </center>
+    <hr>
+    <form class="layui-form" id="form1">
+        <input type="hidden" id="id">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-inline">
+                <input type="text" id="uname" name="uname" lay-verify="uname" autocomplete="off"
+                       placeholder="请输入用户名" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-inline">
+                <input type="text" id="email" name="email" lay-verify="email" autocomplete="off"
+                       placeholder="请输入邮箱" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-inline">
+                <input type="text" id="role" name="role" lay-verify="role" autocomplete="off"
+                       placeholder="请输入身份" class="layui-input">
+                <!--       <select id="role"  lay-verify="role" autocomplete="off">
+                           <option value="admin">管理员</option>
+                           <option value="employee">职员</option>
+                           <option value="checker">检修员</option>
+                       </select>-->
+            </div>
+        </div>
+    </form>
+</div>
 </body>
 </html>

@@ -67,4 +67,17 @@ public class UserDAOImpl implements IUserDAO{
         }
         return null;
     }
+
+    @Override
+    public int deleteUserInfoById(int id) {
+        try{
+            SqlSession sqlSession = sessionFactoryBean.openSession(true);
+            String statment = "com.isoft.mapping.userMapper.deleteUserInfoById";
+            int i=sqlSession.delete(statment,id);
+            return i;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
